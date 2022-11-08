@@ -9,13 +9,16 @@
 import glob
 import mmap
 from cli_args_system import Args
+from pathlib import Path
 
 anomalies = [b"$emit", b"submit(", b"commit(", b"split(", b"@Test(\n", b"[C", b", 'C"]
 snippets = [b'it(', b'@Test(', b', async () => {', b', assert', b', () => {', b',  () => {', b', () =>', b', fakeAsync(() => {', b', doneFn => {', b', done => {', b', async doneFn => {', b', async done => {', b', async(() => {', b', {', b", '')", b'Rendered);', b'Significant);', b'Zero);', b' expect(isFovExtendable(mockFovFilter)).toBeFalsy());', b', function () {});', b'EmptyContentIs', b'LoaderIs', b'ErrorBoundaryIs', b'FiltersBarMainIs', b'FiltersBarDrilldownIs', b'FiltersBarPageIs', b'ComponentIs', b'ComponentIsNot', b'LineChartIs', b", '' skip: true })", b'// ', b"t close menu'"]
 
 def units_fetcher(path):
     raw_units = []
-    specs = glob.glob(path+'**/*.spec.ts', recursive=True)
+    specs = []
+    for path in Path(path).rglob('*.spec.ts'):
+        specs.append(path)
     for spec in specs:
         with open(spec, 'rb') as file:
             f = mmap.mmap(file.fileno(), 0, access=mmap.ACCESS_READ)
