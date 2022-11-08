@@ -1,20 +1,24 @@
 """Unit tests retriever
-    - [x] list all spec files under folder_path
+    - [x] list all spec files under path
     - [x] fetch all it(), test()
         - [x] del id > , 'C  > [C
         - [x] del nonrelevant
     - [x] trim testcase names > it( > @Test(
 """
 
-folder_path = "/home/cerebral/cs/app-frontends/apps/"
 
 import glob
 import mmap
+from cli_args_system import Args
 
+args = Args(convert_numbers=False)
+
+# "/home/cerebral/cs/app-frontends/apps/"
+path = args.flag_str('p','path')
 
 def units_fetcher():
     raw_units = []
-    specs = glob.glob(folder_path+'**/*.spec.ts', recursive=True)
+    specs = glob.glob(path+'**/*.spec.ts', recursive=True)
 
     for spec in specs:
         with open(spec, 'rb') as file:
